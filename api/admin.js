@@ -7,7 +7,7 @@ const { User, Admin } = require('./models');
 const app = express();
 app.use(express.json());
 
-const MONGO_URI = 'mongodb+srv://Surbate:2-mDRh2JH2@Qmb;@pntl-inactivity-c.ejgk7.mongodb.net/?retryWrites=true&w=majority&appName=PNTL-Inactivity-C';
+const MONGO_URI = process.env.MONGODB_URI;
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.post('/api/admin/login', async (req, res) => {
@@ -23,7 +23,7 @@ app.post('/api/admin/login', async (req, res) => {
         return res.status(400).send('Invalid Credentials');
     }
 
-    const token = jwt.sign({ role: 'admin' }, 'jwt-secret', { expiresIn: '1h' });
+    const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.send({ token });
 })
 
